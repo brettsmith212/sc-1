@@ -1,4 +1,3 @@
-import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import FeatureSection from '../components/FeatureSection';
 import PersonasSection from '../components/PersonasSection';
@@ -9,7 +8,6 @@ import Footer from '../components/Footer';
 function Landing() {
   return (
     <div className="min-h-screen">
-      <Navbar />
       <main>
         {/* Hero Section */}
         <section id="hero" className="py-16 lg:py-24 bg-warm">

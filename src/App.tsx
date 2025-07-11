@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast'
 import { onAuthStateChange } from './utils/supabaseClient'
 import PrivateRoute from './components/PrivateRoute'
+import Navbar from './components/Navbar'
 import Landing from './pages/Landing'
 import Dashboard from './pages/Dashboard'
 import NewShipment from './pages/NewShipment'
@@ -33,6 +34,7 @@ function App() {
 
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route 
           path="/" 

@@ -22,7 +22,7 @@
   - **Agent Instructions**: Test by accessing /dashboard without login (should redirect); login and access (should load a placeholder Dashboard).
 
 ## Navigation Updates for Logged-In View
-- [ ] Step 3: Update Navbar for Logged-In State
+- [x] Step 3: Update Navbar for Logged-In State
   - **Task**: Modify Navbar to conditionally render based on auth session: for logged-in, show logo linking to /dashboard, quick links (Dashboard, New Shipment), user avatar/name dropdown with Savings summary (placeholder text like "Lifetime Savings: $0") and Logout; add hamburger icon for mobile sidebar toggle. Use Tailwind for styling consistency (e.g., green accents #B0EC9C).
   - **Description**: Adapts the navigation to the logged-in context, providing quick access to core actions like New Shipment while displaying key metrics (savings) per PRD's dashboard goals. This minimizes friction for personas like Missionary Families.
   - **Files**:
