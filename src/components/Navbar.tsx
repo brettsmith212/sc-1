@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import SignUp from './SignUp';
 import Login from './Login';
@@ -12,6 +12,7 @@ function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const location = useLocation();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -62,6 +63,23 @@ function Navbar() {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Handle clicking outside dropdown to close it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsUserDropdownOpen(false);
+      }
+    };
+
+    if (isUserDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isUserDropdownOpen]);
 
   // Don't show navbar on landing page for logged-out users
   if (!user && location.pathname === '/') {
@@ -189,12 +207,12 @@ function Navbar() {
 
   // Logged-in navbar
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <nav className="bg-light border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/dashboard" className="text-gray-900 text-xl font-bold">
+            <Link to="/dashboard" className="text-text-primary text-xl font-bold">
               ShipComplete
             </Link>
           </div>
@@ -206,8 +224,8 @@ function Navbar() {
                 to="/dashboard"
                 className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
                   location.pathname === '/dashboard' 
-                    ? 'text-green-600 bg-green-50' 
-                    : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                    ? 'text-text-primary bg-warm' 
+                    : 'text-text-primary hover:bg-warm'
                 }`}
               >
                 Dashboard
@@ -216,8 +234,8 @@ function Navbar() {
                 to="/new-shipment"
                 className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
                   location.pathname === '/new-shipment' 
-                    ? 'text-white bg-green-600' 
-                    : 'text-gray-700 hover:text-white hover:bg-green-600'
+                    ? 'bg-primary text-text-primary' 
+                    : 'text-text-primary hover:bg-primary hover:text-text-primary'
                 }`}
               >
                 New Shipment
@@ -228,12 +246,12 @@ function Navbar() {
           {/* Desktop User Dropdown */}
           <div className="hidden md:block">
             <div className="ml-4 flex items-center space-x-4">
-              <div className="relative">
+              <div className="relative" ref={dropdownRef}>
                 <button 
                   onClick={toggleUserDropdown}
-                  className="flex items-center text-sm text-gray-700 hover:text-green-600 focus:outline-none focus:text-green-600 transition-colors duration-200"
+                  className="flex items-center text-sm text-text-primary hover:bg-warm focus:outline-none rounded-lg px-3 py-2 transition-colors duration-200"
                 >
-                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-medium mr-2">
+                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-text-primary font-medium mr-2">
                     {user?.email?.charAt(0).toUpperCase()}
                   </div>
                   <span className="hidden lg:block">{user?.email?.split('@')[0]}</span>
@@ -244,15 +262,15 @@ function Navbar() {
                 
                 {/* Dropdown Menu */}
                 {isUserDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                  <div className="absolute right-0 mt-2 w-64 bg-light rounded-lg shadow-lg border border-gray-200 z-10">
                     <div className="p-4 border-b border-gray-200">
-                      <div className="text-sm text-gray-600">Lifetime Savings</div>
-                      <div className="text-lg font-semibold text-green-600">$0</div>
+                      <div className="text-sm text-text-primary opacity-75">Lifetime Savings</div>
+                      <div className="text-lg font-semibold text-primary">$0</div>
                     </div>
                     <div className="py-2">
                       <button 
                         onClick={handleLogout}
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                        className="w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-warm transition-colors duration-200"
                       >
                         Sign Out
                       </button>
@@ -267,7 +285,7 @@ function Navbar() {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-gray-700 hover:text-green-600 focus:outline-none focus:text-green-600 transition-colors duration-200"
+              className="text-text-primary hover:text-text-primary focus:outline-none focus:text-text-primary"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isMenuOpen ? (
@@ -284,13 +302,13 @@ function Navbar() {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-light border-t border-gray-200">
             <Link
               to="/dashboard"
               className={`block px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200 ${
                 location.pathname === '/dashboard' 
-                  ? 'text-green-600 bg-green-50' 
-                  : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
+                  ? 'text-text-primary bg-warm' 
+                  : 'text-text-primary hover:bg-warm'
               }`}
             >
               Dashboard
@@ -299,25 +317,25 @@ function Navbar() {
               to="/new-shipment"
               className={`block px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200 ${
                 location.pathname === '/new-shipment' 
-                  ? 'text-white bg-green-600' 
-                  : 'text-gray-700 hover:text-white hover:bg-green-600'
+                  ? 'bg-primary text-text-primary' 
+                  : 'text-text-primary hover:bg-primary hover:text-text-primary'
               }`}
             >
               New Shipment
             </Link>
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-3 mb-3">
-                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-medium mr-3">
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-text-primary font-medium mr-3">
                   {user?.email?.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <div className="text-sm text-gray-600">Lifetime Savings</div>
-                  <div className="text-lg font-semibold text-green-600">$0</div>
+                  <div className="text-sm text-text-primary opacity-75">Lifetime Savings</div>
+                  <div className="text-lg font-semibold text-primary">$0</div>
                 </div>
               </div>
               <button 
                 onClick={handleLogout}
-                className="w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+                className="w-full text-left px-3 py-2 text-base font-medium text-text-primary hover:bg-warm rounded-lg transition-colors duration-200"
               >
                 Sign Out
               </button>
