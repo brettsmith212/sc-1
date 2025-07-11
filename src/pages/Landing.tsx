@@ -4,6 +4,7 @@ import FeatureSection from '../components/FeatureSection';
 import PersonasSection from '../components/PersonasSection';
 import StatsSection from '../components/StatsSection';
 import AboutSection from '../components/AboutSection';
+import Footer from '../components/Footer';
 
 function Landing() {
   return (
@@ -96,11 +97,7 @@ function Landing() {
         </section>
 
         {/* Footer Section */}
-        <section id="footer" className="py-16 bg-dark">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Footer content placeholder */}
-          </div>
-        </section>
+        <Footer />
       </main>
     </div>
   );
