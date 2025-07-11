@@ -1,130 +1,139 @@
 # Implementation Plan
 
-## Project Setup
-- [x] Step 1: Initialize Vite React TypeScript Project with Tailwind CSS
-  - **Task**: Create a new Vite project using React and TypeScript, install and configure Tailwind CSS for styling, and set up basic project structure including a main App component that renders a Landing page. Include Tailwind directives in index.css and ensure the project runs locally.
-  - **Description**: This step establishes the foundation for the web app, enabling rapid styling with Tailwind to mimic Buffer.com’s clean, modern design (e.g., utility classes for layouts, colors, and responsiveness). It prepares for cloning Buffer’s look without any content yet.
+## Routing and Authentication Enhancements
+- [ ] Step 1: Install React Router and Set Up Basic Routing
+  - **Task**: Install react-router-dom, configure routing in App.tsx to handle public (Landing) and private routes (Dashboard, etc.), and wrap private routes with an auth check using Supabase session. Define routes for / (Landing), /dashboard, /new-shipment, /history, /templates, /settings. Redirect logged-in users from / to /dashboard.
+  - **Description**: This establishes client-side routing to separate logged-in views from the public landing page, ensuring secure access to app features per PRD's auth requirements. It prevents unauthorized access and enables seamless navigation post-login.
   - **Files**:
-    - `package.json`: Add dependencies for Tailwind CSS (@tailwindcss/forms, tailwindcss, postcss, autoprefixer) and update scripts if needed.
-    - `vite.config.ts`: Basic Vite config for React.
-    - `tailwind.config.js`: Configure Tailwind with default theme extensions (e.g., colors from Buffer: text #213130, navbar #FFFFFA, button #B0EC9C with hover #9BE784, hero #F2F2E8, boxes #D4C2FF/#FFB2A8/#FFD88A/#B0EC9C/#ADDAFF, footer #213130).
-    - `src/index.css`: Add @tailwind base, components, utilities; import Google Fonts for 'Inter' (Buffer’s font family).
-    - `src/App.tsx`: Render a basic <Landing /> component.
-    - `src/pages/Landing.tsx`: Create an empty functional component for the landing page.
-  - **Step Dependencies**: None
-  - **Agent Instructions**: After implementation, run `npm install` and `npm run dev` to verify the blank app loads with Tailwind styles applied (e.g., test a div with class `bg-buffer-button` to approximate Buffer’s button color #B0EC9C).
+    - `package.json`: Add react-router-dom as a dependency.
+    - `src/App.tsx`: Import BrowserRouter, Routes, Route; add auth listener to check session and render routes conditionally.
+    - `src/main.tsx`: Wrap App with Router if needed.
+    - `src/utils/supabaseClient.ts`: Export a hook or function to get current session.
+  - **Step Dependencies**: None (builds on existing Supabase setup from landing page plan).
+  - **Agent Instructions**: After changes, run `npm install` and `npm run dev`; test by logging in/out to verify redirects (e.g., logged-in user sees /dashboard instead of landing).
 
-- [x] Step 2: Install Supabase Client and Set Up Environment Variables
-  - **Task**: Install the Supabase JavaScript client library, create a .env file for Supabase URL and anon key (placeholders), and initialize a Supabase client in a utility file for future auth usage.
-  - **Description**: Prepares the app for authentication features by integrating Supabase early, allowing seamless addition of login/signup later while focusing on the landing page clone. This keeps the plan aligned with PRD’s auth requirements without implementing flows yet.
+- [ ] Step 2: Create Private Route Wrapper Component
+  - **Task**: Build a PrivateRoute component that checks Supabase session; if not authenticated, redirect to / (Landing) with a toast notification; otherwise, render the child component. Apply this to all logged-in routes in App.tsx.
+  - **Description**: Enhances security by protecting logged-in pages, aligning with PRD's JWT auth and non-functional security requirements. This ensures only authenticated users access the dashboard and shipment flows.
   - **Files**:
-    - `package.json`: Add @supabase/supabase-js as a dependency.
-    - `.env`: Add placeholders like VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.
-    - `vite.config.ts`: Update to include env prefix for VITE_.
-    - `src/utils/supabaseClient.ts`: Export a createClient function using import.meta.env for URL and key.
-  - **Step Dependencies**: Step 1 (Project initialization)
-  - **Agent Instructions**: Replace placeholders in .env with actual Supabase project credentials; test by logging the client in console to ensure no errors.
+    - `src/components/PrivateRoute.tsx`: Define the component using useEffect or similar for session check and Navigate from react-router-dom.
+    - `src/App.tsx`: Wrap private routes (e.g., Dashboard) with PrivateRoute.
+  - **Step Dependencies**: Step 1 (Routing setup).
+  - **Agent Instructions**: Test by accessing /dashboard without login (should redirect); login and access (should load a placeholder Dashboard).
 
-## Navigation and Basic Layout
-- [x] Step 3: Implement Navigation Bar Cloning Buffer’s Style
-  - **Task**: Create a Navbar component mimicking Buffer.com’s top navigation: fixed or sticky positioning, logo on left (use "ShipComplete" text for now), menu items (e.g., Features, Pricing, About – placeholders), and right-side CTAs (Login, Sign Up buttons). Use Tailwind for layout (flex, items-center), fonts (Inter), colors (off-white background #FFFFFA, green button accents #B0EC9C/#9BE784), and rounded buttons.
-  - **Description**: Establishes the top-level navigation to match Buffer’s clean, minimal nav bar, providing a consistent header across the landing page. This step focuses on structure and styling details like hover effects (e.g., underline or color change) and responsiveness (mobile menu collapse).
+## Navigation Updates for Logged-In View
+- [ ] Step 3: Update Navbar for Logged-In State
+  - **Task**: Modify Navbar to conditionally render based on auth session: for logged-in, show logo linking to /dashboard, quick links (Dashboard, New Shipment), user avatar/name dropdown with Savings summary (placeholder text like "Lifetime Savings: $0") and Logout; add hamburger icon for mobile sidebar toggle. Use Tailwind for styling consistency (e.g., green accents #B0EC9C).
+  - **Description**: Adapts the navigation to the logged-in context, providing quick access to core actions like New Shipment while displaying key metrics (savings) per PRD's dashboard goals. This minimizes friction for personas like Missionary Families.
   - **Files**:
-    - `src/components/Navbar.tsx`: Define the component with JSX for logo, links, and buttons; add Tailwind classes for styling (e.g., bg-buffer-navbar, text-buffer-text).
-    - `src/pages/Landing.tsx`: Import and render <Navbar /> at the top.
-    - `src/index.css`: Add any custom Tailwind components if needed (e.g., @layer for button styles).
-  - **Step Dependencies**: Step 1 (Project setup)
-  - **Agent Instructions**: View the page on desktop and mobile; ensure nav items align properly and buttons have hover states (e.g., bg-buffer-button-hover).
+    - `src/components/Navbar.tsx`: Add session check, conditional JSX for logged-in elements, dropdown logic (use state for toggle), and hamburger icon.
+    - `src/App.tsx`: Ensure Navbar is rendered in all routes.
+    - `src/utils/supabaseClient.ts`: Use getSession for auth state.
+  - **Step Dependencies**: Step 2 (PrivateRoute ready).
+  - **Agent Instructions**: Login; verify Navbar shows user elements and dropdown; click Logout to test sign-out and redirect to Landing.
 
-- [x] Step 4: Set Up Basic Section Layout for Landing Page
-  - **Task**: Structure the Landing page with empty section divs mimicking Buffer’s vertical flow: Hero, Trusted Stats, Features (multiple), Community/Personas, About, Footer. Use Tailwind for full-width sections with padding (e.g., py-16, max-w-7xl mx-auto).
-  - **Description**: Creates the skeleton to clone Buffer’s sectional layout, ensuring responsiveness and spacing details (e.g., generous vertical padding, centered content) for a professional feel. This prepares for content population without adding details yet.
+- [ ] Step 4: Implement Sidebar Component
+  - **Task**: Create a Sidebar component with links to Dashboard, New Shipment (highlighted CTA), History, Templates, Settings, Support, and Logout at bottom. Make it collapsible on desktop (toggle button) and full-screen overlay on mobile (triggered by Navbar hamburger). Use Tailwind for vertical layout, responsiveness (e.g., hidden by default on mobile), and styling matching Buffer (e.g., #213130 background).
+  - **Description**: Provides structured navigation for deeper app sections without cluttering the top bar, improving UX for frequent tasks per PRD's lean design. It's complementary to Navbar, avoiding redundancy by focusing on full menu.
   - **Files**:
-    - `src/pages/Landing.tsx`: Add <main> with section elements, each with unique IDs and Tailwind classes (e.g., bg-gray-50 for alternating sections).
-  - **Step Dependencies**: Step 3 (Navbar in place)
-  - **Agent Instructions**: Scroll the page; verify sections stack vertically with proper spacing and no overlaps on resize.
+    - `src/components/Sidebar.tsx`: Define component with NavLink from react-router-dom for links, state for collapse/overlay.
+    - `src/components/Navbar.tsx`: Add hamburger click handler to toggle Sidebar.
+    - `src/pages/Dashboard.tsx`: Import and render Sidebar (placeholder for now).
+  - **Step Dependencies**: Step 3 (Navbar updated).
+  - **Agent Instructions**: On desktop, toggle collapse; on mobile, open/close overlay; click links to ensure routing works (even to placeholders).
 
-## Hero Section
-- [x] Step 5: Build Hero Section with ShipComplete Content
-  - **Task**: Implement the Hero section cloning Buffer’s style: large headline ("Lower the barrier for shipping with deep discounts"), subheadline from PRD executive summary, CTA buttons ("Get Started for Free", "Learn More"), and background or illustration placeholder. Use Tailwind for grid/flex layout, font sizes (e.g., text-5xl font-bold), colors (green accents #B0EC9C, beige background #F2F2E8), and subtle animations (e.g., fade-in via CSS).
-  - **Description**: Captures Buffer’s prominent hero for immediate value prop display, replacing with ShipComplete’s focus on discounts and ease. This step ensures the first impression matches Buffer’s engaging, text-heavy hero with CTAs.
+## Dashboard Page Implementation
+- [ ] Step 5: Create Dashboard Page Skeleton
+  - **Task**: Build Dashboard.tsx with main content area: grid of metric cards for savings (e.g., "Lifetime Savings: $X", "This Month: $Y on Z shipments" – use placeholders or mock data), recent shipments list (top 3-5 as cards with mock details like date, recipient, savings), and prominent "Create New Shipment" button linking to /new-shipment. Include Sidebar integration.
+  - **Description**: Establishes the home screen for logged-in users, showcasing savings and quick actions per PRD's F8 (savings dashboard) and success metrics. This builds trust and encourages retention.
   - **Files**:
-    - `src/components/Hero.tsx`: Create component with JSX for text, buttons, and optional image placeholder.
-    - `src/pages/Landing.tsx`: Import and render <Hero /> in the first section.
-    - `src/index.css`: Add custom styles for hero-specific effects if needed (e.g., gradient text).
-  - **Step Dependencies**: Step 4 (Layout sections)
-  - **Agent Instructions**: Check hero on mobile; ensure text reflows and CTAs are prominent.
+    - `src/pages/Dashboard.tsx`: JSX for grid/cards, mock data array, button with Link.
+    - `src/App.tsx`: Add Route for /dashboard to Dashboard component.
+    - `src/components/Sidebar.tsx`: Ensure Dashboard link is active.
+  - **Step Dependencies**: Step 4 (Sidebar ready).
+  - **Agent Instructions**: Navigate to /dashboard; verify cards display mocks, button routes to /new-shipment placeholder, and layout is responsive (stacks on mobile).
 
-## Features Sections
-- [x] Step 6: Implement Features Sections Mimicking Buffer’s Format
-  - **Task**: Create reusable FeatureSection component and instantiate multiple (e.g., for Instant Discounts, AR Camera, QR Drop-off, Lean UX from PRD). Each with headline, bullet points, and screenshot placeholders (use divs with backgrounds like #D4C2FF, #FFB2A8, #FFD88A, #B0EC9C, or #ADDAFF). Style like Buffer: left/right alignment, rounded images, bullet icons.
-  - **Description**: Clones Buffer’s feature breakdowns for showcasing ShipComplete’s differentiators, using alternating layouts for visual interest. This keeps sections self-contained and easy to expand.
+- [ ] Step 6: Integrate Real Savings Data into Dashboard
+  - **Task**: Use Supabase to fetch user-specific data (e.g., from a 'shipments' table – assume schema exists or create via code comments); calculate and display actual lifetime/monthly savings vs. retail rates. Add error handling for fetches.
+  - **Description**: Makes the dashboard dynamic, directly tying to PRD's goal of showing clear dollar savings. This step transitions from mocks to backend integration for accuracy.
   - **Files**:
-    - `src/components/FeatureSection.tsx`: Define reusable component with props for title, bullets, image.
-    - `src/pages/Landing.tsx`: Add multiple <FeatureSection /> instances with ShipComplete content.
-  - **Step Dependencies**: Step 5 (Hero complete)
-  - **Agent Instructions**: Verify bullets align and images (placeholders) respond to screen size.
+    - `src/pages/Dashboard.tsx`: Add useEffect for Supabase queries, state for data, calculations (e.g., sum savings).
+    - `src/utils/supabaseClient.ts`: Export functions for querying shipments table.
+  - **Step Dependencies**: Step 5 (Dashboard skeleton).
+  - **Agent Instructions**: Mock a shipments table in Supabase if needed; login and verify fetched data displays (use console logs for debugging).
 
-## Personas and About Sections
-- [x] Step 7: Add Personas/Community Sections
-  - **Task**: Create PersonasSection component cloning Buffer’s community profiles: sections for Missionary Family, Occasional Reseller, Micro-Brand Founder with profiles (name, description, stats from PRD). Use card grid with rounded corners, shadows, and hover effects, with backgrounds or borders in #D4C2FF, #FFB2A8, #FFD88A, #B0EC9C, or #ADDAFF.
-  - **Description**: Mirrors Buffer’s user-focused sections to highlight ShipComplete personas, building trust. Focuses on card-based design for clonability.
+## New Shipment Page Implementation
+- [ ] Step 7: Set Up New Shipment Page with Multi-Step Form Structure
+  - **Task**: Create NewShipment.tsx with a 3-step wizard (progress bar): Step 1 - Addresses (From/To with autocomplete placeholder), Step 2 - Package Details (dimensions/weight inputs, AR button placeholder), Step 3 - Rates & Payment (options list, pay button). Use state for form data and step navigation. Include Sidebar.
+  - **Description**: Implements the core shipment flow per PRD's F3-F7, enabling <2-minute label creation. The stepped structure guides users, reducing errors for occasional shippers.
   - **Files**:
-    - `src/components/PersonasSection.tsx`: Component with grid of cards.
-    - `src/pages/Landing.tsx`: Import and render in appropriate sections.
-  - **Step Dependencies**: Step 6 (Features in place)
-  - **Agent Instructions**: Hover over cards; check for effects and mobile stacking.
+    - `src/pages/NewShipment.tsx`: Define component with useState for steps/form, conditional rendering per step.
+    - `src/App.tsx`: Add Route for /new-shipment.
+    - `src/components/Sidebar.tsx`: Ensure New Shipment link is highlighted.
+  - **Step Dependencies**: Step 4 (Sidebar ready).
+  - **Agent Instructions**: Navigate to /new-shipment; progress through steps, verify form state persists, and back/next buttons work.
 
-- [x] Step 8: Implement About and Stats Sections
-  - **Task**: Add About section with ShipComplete summary (from PRD goals/non-goals), and a stats bar cloning Buffer’s trusted metrics (e.g., "Up to 89% savings", "500k+ potential users"). Use Tailwind for centered text (#213130) and stat cards with backgrounds in #D4C2FF, #FFB2A8, #FFD88A, #B0EC9C, or #ADDAFF.
-  - **Description**: Provides company context like Buffer’s About, with stats for credibility. Keeps it simple and integrated into the flow.
+- [ ] Step 8: Implement Address Autocomplete and Validation in New Shipment
+  - **Task**: Integrate USPS API (use a mock or placeholder fetch for now) for address suggestions and validation in Step 1; add inline errors for invalid/international addresses. Auto-fill fields on selection.
+  - **Description**: Addresses PRD's F6 for frictionless input, preventing costly errors like invalid shipments. This enhances reliability for all personas.
   - **Files**:
-    - `src/components/AboutSection.tsx`: Text and links.
-    - `src/components/StatsSection.tsx`: Grid of stats.
-    - `src/pages/Landing.tsx`: Import and place both.
-  - **Step Dependencies**: Step 7 (Personas complete)
-  - **Agent Instructions**: Ensure stats are visible and text is readable on all devices.
+    - `src/pages/NewShipment.tsx`: Add inputs with onChange for API calls, dropdown for suggestions, validation logic.
+    - `src/utils/api.ts`: Create a utility for USPS API fetch (mock response initially).
+  - **Step Dependencies**: Step 7 (Form structure).
+  - **Agent Instructions**: Type an address; verify suggestions appear and validation flags errors (e.g., international prompt).
 
-## Footer and Responsiveness
-- [x] Step 9: Build Footer Cloning Buffer’s Style
-  - **Task**: Create Footer component with links (e.g., Privacy, Terms), social icons, and copyright. Style with dark teal background #213130, white text, rounded icons if applicable.
-  - **Description**: Completes the page structure matching Buffer’s footer for navigation and legal info.
+- [ ] Step 9: Add Package Details with AR Fallback in New Shipment
+  - **Task**: In Step 2, implement manual inputs for LxWxH/weight; add AR button that (for now) simulates capture with mock values or prompts fallback manual entry with photo upload placeholder. Include confirmation prompt for dimensions.
+  - **Description**: Covers PRD's F5 for AR dimension capture, with fallback to ensure accessibility across devices. This lowers barriers for mobile users like families.
   - **Files**:
-    - `src/components/Footer.tsx`: JSX for links and text.
-    - `src/pages/Landing.tsx`: Add at bottom.
-  - **Step Dependencies**: Step 8 (Main content done)
-  - **Agent Instructions**: Check footer links and responsiveness.
+    - `src/pages/NewShipment.tsx`: Add inputs, button handler for AR sim, state updates for dims.
+  - **Step Dependencies**: Step 8 (Step 1 complete).
+  - **Agent Instructions**: Click AR button; verify fallback triggers and values auto-fill; test manual entry.
 
-- [x] Step 10: Ensure Full Responsiveness and Polish
-  - **Task**: Add media queries/Tailwind responsive classes across all components (e.g., sm:, md: prefixes for layouts), test for mobile-first design, and add subtle animations (e.g., transition-all for hovers).
-  - **Description**: Finalizes the landing page clone by ensuring Buffer-like fluidity on all devices, critical for PRD’s responsive requirement.
+- [ ] Step 10: Integrate Rate Shopping, Payment, and Label Generation in New Shipment
+  - **Task**: In Step 3, fetch UPS/USPS rates (mock API initially), display color-coded options; add insurance checkbox, Stripe payment form, and generate label/QR (mock PDF/QR download). Save to history via Supabase. Add draft resume feature.
+  - **Description**: Completes the shipment flow per PRD's F3-F4, F7, F9, enabling end-to-end creation with savings display. This is key for value prop (up to 89% off).
   - **Files**:
-    - `src/pages/Landing.tsx`: Adjust classes if needed.
-    - `src/components/Navbar.tsx`: Add mobile menu toggle.
-    - `src/components/Hero.tsx`: Responsive text sizes.
-    - `src/components/FeatureSection.tsx`: Stack on mobile.
-    - `src/index.css`: Any global responsive utilities.
-  - **Step Dependencies**: Step 9 (Footer in place)
-  - **Agent Instructions**: Test on various screen sizes; confirm no layout breaks.
+    - `src/pages/NewShipment.tsx`: Add rate fetch, options JSX, Stripe Elements integration, generation logic.
+    - `src/utils/api.ts`: Mock functions for rates/labels.
+    - `src/utils/supabaseClient.ts`: Function to insert shipment record.
+  - **Step Dependencies**: Step 9 (Step 2 complete).
+  - **Agent Instructions**: Complete form; verify rates show, payment mocks succeed, label generates, and history insert logs.
 
-## Authentication Integration
-- [x] Step 11: Implement Sign Up Functionality with Supabase
-  - **Task**: Create a SignUp component (modal or page) using Supabase auth for email/magic link and OAuth (Google). Hook into Navbar’s Sign Up button to show it. Handle errors and success states.
-  - **Description**: Adds core auth feature per PRD, integrating with Supabase for minimal friction signup. Focuses on UI matching Buffer’s clean forms.
+## Additional Pages and Polish
+- [ ] Step 11: Implement Shipment History Page
+  - **Task**: Create History.tsx with table/cards of past shipments (fetch from Supabase), filters (date/carrier), actions (download, void). Include tracking links and notifications opt-in display.
+  - **Description**: Fulfills PRD's F4 and F12 for 90-day history and tracking, allowing users to manage past shipments and track savings over time.
   - **Files**:
-    - `src/components/SignUp.tsx`: Form with inputs and Supabase calls.
-    - `src/components/Navbar.tsx`: Add button to trigger SignUp modal.
-    - `src/utils/supabaseClient.ts`: Use for auth.signUp.
-  - **Step Dependencies**: Step 2 (Supabase setup), Step 10 (Page complete)
-  - **Agent Instructions**: Click Sign Up; test with a dummy email to receive magic link (check console for errors).
+    - `src/pages/History.tsx`: JSX for table, useEffect for fetch, filter state.
+    - `src/App.tsx`: Add Route for /history.
+    - `src/utils/supabaseClient.ts`: Query function for shipments.
+  - **Step Dependencies**: Step 6 (Data integration experience).
+  - **Agent Instructions**: Add mock data to Supabase; verify list displays, filters work, actions log.
 
-- [x] Step 12: Implement Login and Logout with Supabase
-  - **Task**: Create Login component similar to SignUp for email/OAuth login, and add logout function. Update Navbar to show user profile/logout when authenticated. Use Supabase session management.
-  - **Description**: Completes auth triad, enabling user sessions. Ensures seamless integration into the cloned UI without disrupting landing flow.
+- [ ] Step 12: Add Saved Templates and Settings Pages
+  - **Task**: Create Templates.tsx for CRUD on templates (list, add/edit modals) and Settings.tsx for profile/payment edits (forms). Link templates to New Shipment pre-fill.
+  - **Description**: Supports PRD's F10 for templates and implicit settings, enhancing efficiency for repeat users like Micro-Brand Founders.
   - **Files**:
-    - `src/components/Login.tsx`: Form and auth.signIn.
-    - `src/components/Navbar.tsx`: Conditional rendering for logged-in state.
-    - `src/App.tsx`: Add Supabase auth listener for session.
-    - `src/utils/supabaseClient.ts`: Add getSession and signOut functions.
-  - **Step Dependencies**: Step 11 (Sign Up done)
-  - **Agent Instructions**: Sign up, then login/logout; verify Navbar updates accordingly.
+    - `src/pages/Templates.tsx`: List and modal JSX, Supabase CRUD.
+    - `src/pages/Settings.tsx`: Forms for updates.
+    - `src/App.tsx`: Add Routes for /templates, /settings.
+    - `src/pages/NewShipment.tsx`: Add template dropdown to pre-fill.
+    - `src/utils/supabaseClient.ts`: Functions for templates table.
+  - **Step Dependencies**: Step 11 (History similar).
+  - **Agent Instructions**: Create/edit a template; verify it pre-fills in New Shipment; update settings and check persistence.
+
+- [ ] Step 13: Implement Support Page and Final Responsiveness Polish
+  - **Task**: Create Support.tsx with email ticketing form (submit via Supabase or mock), FAQ list. Ensure all logged-in pages are responsive (Tailwind classes), add toasts for errors/success, and test WCAG AA basics.
+  - **Description**: Meets PRD's F11 for support and non-functional requirements (accessibility, performance). This completes the MVP with polished UX.
+  - **Files**:
+    - `src/pages/Support.tsx`: Form and FAQ JSX.
+    - `src/App.tsx`: Add Route for /support.
+    - `src/components/Navbar.tsx`: Add global toast container if needed.
+    - `src/pages/Dashboard.tsx`: Adjust classes for responsiveness.
+    - `src/pages/NewShipment.tsx`: Adjust classes.
+    - `src/pages/History.tsx`: Adjust classes.
+    - `src/pages/Templates.tsx`: Adjust classes.
+    - `src/pages/Settings.tsx`: Adjust classes.
+  - **Step Dependencies**: Step 12 (All pages ready).
+  - **Agent Instructions**: Submit support form (check console); resize browser to test layouts; verify no accessibility issues (e.g., alt texts, contrasts).
