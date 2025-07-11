@@ -14,7 +14,7 @@
   - **Step Dependencies**: None
   - **Agent Instructions**: After implementation, run `npm install` and `npm run dev` to verify the blank app loads with Tailwind styles applied (e.g., test a div with class `bg-buffer-button` to approximate Buffer’s button color #B0EC9C).
 
-- [ ] Step 2: Install Supabase Client and Set Up Environment Variables
+- [x] Step 2: Install Supabase Client and Set Up Environment Variables
   - **Task**: Install the Supabase JavaScript client library, create a .env file for Supabase URL and anon key (placeholders), and initialize a Supabase client in a utility file for future auth usage.
   - **Description**: Prepares the app for authentication features by integrating Supabase early, allowing seamless addition of login/signup later while focusing on the landing page clone. This keeps the plan aligned with PRD’s auth requirements without implementing flows yet.
   - **Files**:

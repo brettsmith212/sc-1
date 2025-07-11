@@ -1,6 +1,9 @@
+import Navbar from '../components/Navbar';
+
 function Landing() {
   return (
     <div className="min-h-screen bg-buffer-hero">
+      <Navbar />
       <h1 className="text-buffer-text text-4xl font-bold p-8">
         Welcome to ShipComplete
       </h1>
