@@ -75,7 +75,7 @@
   - **Step Dependencies**: Step 6 (Features in place)
   - **Agent Instructions**: Hover over cards; check for effects and mobile stacking.
 
-- [ ] Step 8: Implement About and Stats Sections
+- [x] Step 8: Implement About and Stats Sections
   - **Task**: Add About section with ShipComplete summary (from PRD goals/non-goals), and a stats bar cloning Buffer’s trusted metrics (e.g., "Up to 89% savings", "500k+ potential users"). Use Tailwind for centered text (#213130) and stat cards with backgrounds in #D4C2FF, #FFB2A8, #FFD88A, #B0EC9C, or #ADDAFF.
   - **Description**: Provides company context like Buffer’s About, with stats for credibility. Keeps it simple and integrated into the flow.
   - **Files**:

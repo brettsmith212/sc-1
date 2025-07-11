@@ -2,6 +2,8 @@ import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import FeatureSection from '../components/FeatureSection';
 import PersonasSection from '../components/PersonasSection';
+import StatsSection from '../components/StatsSection';
+import AboutSection from '../components/AboutSection';
 
 function Landing() {
   return (
@@ -18,11 +20,7 @@ function Landing() {
         {/* Main Content Section - All sections between hero and footer */}
         <section className="bg-light">
           {/* Trusted Stats Section */}
-          <div id="stats" className="py-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {/* Stats content placeholder */}
-            </div>
-          </div>
+          <StatsSection />
 
           {/* Features Section 1 - Instant Discounts */}
           <div id="features-1" className="py-16">
@@ -94,11 +92,7 @@ function Landing() {
           <PersonasSection />
 
           {/* About Section */}
-          <div id="about" className="py-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {/* About content placeholder */}
-            </div>
-          </div>
+          <AboutSection />
         </section>
 
         {/* Footer Section */}
