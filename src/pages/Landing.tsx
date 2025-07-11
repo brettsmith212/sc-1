@@ -1,6 +1,7 @@
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import FeatureSection from '../components/FeatureSection';
+import PersonasSection from '../components/PersonasSection';
 
 function Landing() {
   return (
@@ -90,11 +91,7 @@ function Landing() {
           </div>
 
           {/* Community/Personas Section */}
-          <div id="personas" className="py-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {/* Personas content placeholder */}
-            </div>
-          </div>
+          <PersonasSection />
 
           {/* About Section */}
           <div id="about" className="py-16">

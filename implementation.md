@@ -66,7 +66,7 @@
   - **Agent Instructions**: Verify bullets align and images (placeholders) respond to screen size.
 
 ## Personas and About Sections
-- [ ] Step 7: Add Personas/Community Sections
+- [x] Step 7: Add Personas/Community Sections
   - **Task**: Create PersonasSection component cloning Buffer’s community profiles: sections for Missionary Family, Occasional Reseller, Micro-Brand Founder with profiles (name, description, stats from PRD). Use card grid with rounded corners, shadows, and hover effects, with backgrounds or borders in #D4C2FF, #FFB2A8, #FFD88A, #B0EC9C, or #ADDAFF.
   - **Description**: Mirrors Buffer’s user-focused sections to highlight ShipComplete personas, building trust. Focuses on card-based design for clonability.
   - **Files**:
