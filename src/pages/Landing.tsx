@@ -1,4 +1,5 @@
 import Navbar from '../components/Navbar';
+import Hero from '../components/Hero';
 
 function Landing() {
   return (
@@ -6,9 +7,9 @@ function Landing() {
       <Navbar />
       <main>
         {/* Hero Section */}
-        <section id="hero" className="py-16 bg-buffer-hero">
+        <section id="hero" className="py-16 lg:py-24 bg-buffer-hero">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Hero content placeholder */}
+            <Hero />
           </div>
         </section>
 

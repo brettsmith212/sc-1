@@ -45,7 +45,7 @@
   - **Agent Instructions**: Scroll the page; verify sections stack vertically with proper spacing and no overlaps on resize.
 
 ## Hero Section
-- [ ] Step 5: Build Hero Section with ShipComplete Content
+- [x] Step 5: Build Hero Section with ShipComplete Content
   - **Task**: Implement the Hero section cloning Buffer’s style: large headline ("Lower the barrier for shipping with deep discounts"), subheadline from PRD executive summary, CTA buttons ("Get Started for Free", "Learn More"), and background or illustration placeholder. Use Tailwind for grid/flex layout, font sizes (e.g., text-5xl font-bold), colors (green accents #B0EC9C, beige background #F2F2E8), and subtle animations (e.g., fade-in via CSS).
   - **Description**: Captures Buffer’s prominent hero for immediate value prop display, replacing with ShipComplete’s focus on discounts and ease. This step ensures the first impression matches Buffer’s engaging, text-heavy hero with CTAs.
   - **Files**:
