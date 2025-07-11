@@ -7,14 +7,14 @@ function Landing() {
       <Navbar />
       <main>
         {/* Hero Section */}
-        <section id="hero" className="py-16 lg:py-24 bg-buffer-hero">
+        <section id="hero" className="py-16 lg:py-24 bg-warm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Hero />
           </div>
         </section>
 
         {/* Main Content Section - All sections between hero and footer */}
-        <section className="bg-buffer-navbar">
+        <section className="bg-light">
           {/* Trusted Stats Section */}
           <div id="stats" className="py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -59,7 +59,7 @@ function Landing() {
         </section>
 
         {/* Footer Section */}
-        <section id="footer" className="py-16 bg-buffer-text">
+        <section id="footer" className="py-16 bg-dark">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Footer content placeholder */}
           </div>
