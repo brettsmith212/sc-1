@@ -118,7 +118,7 @@
   - **Step Dependencies**: Step 2 (Supabase setup), Step 10 (Page complete)
   - **Agent Instructions**: Click Sign Up; test with a dummy email to receive magic link (check console for errors).
 
-- [ ] Step 12: Implement Login and Logout with Supabase
+- [x] Step 12: Implement Login and Logout with Supabase
   - **Task**: Create Login component similar to SignUp for email/OAuth login, and add logout function. Update Navbar to show user profile/logout when authenticated. Use Supabase session management.
   - **Description**: Completes auth triad, enabling user sessions. Ensures seamless integration into the cloned UI without disrupting landing flow.
   - **Files**:

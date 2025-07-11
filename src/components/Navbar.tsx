@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SignUp from './SignUp';
+import Login from './Login';
+import { supabase, signOut } from '../utils/supabaseClient';
+import type { User } from '@supabase/supabase-js';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -16,6 +21,38 @@ function Navbar() {
   const closeSignUp = () => {
     setIsSignUpOpen(false);
   };
+
+  const openLogin = () => {
+    setIsLoginOpen(true);
+  };
+
+  const closeLogin = () => {
+    setIsLoginOpen(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      setUser(null);
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
+  // Check for existing session and listen for auth changes
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <nav className="bg-light border-b border-gray-200 sticky top-0 z-50">
@@ -55,15 +92,34 @@ function Navbar() {
           {/* Desktop CTA Buttons */}
           <div className="hidden md:block">
             <div className="ml-4 flex items-center space-x-4">
-              <button className="text-text-primary px-4 py-2 text-sm font-medium rounded-lg border border-text-primary hover:bg-warm transition-colors duration-200">
-                Log in
-              </button>
-              <button 
-                onClick={openSignUp}
-                className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200"
-              >
-                Get Started
-              </button>
+              {user ? (
+                <>
+                  <span className="text-text-primary text-sm">
+                    Welcome, {user.email?.split('@')[0]}!
+                  </span>
+                  <button 
+                    onClick={handleLogout}
+                    className="text-text-primary px-4 py-2 text-sm font-medium rounded-lg border border-text-primary hover:bg-warm transition-colors duration-200"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button 
+                    onClick={openLogin}
+                    className="text-text-primary px-4 py-2 text-sm font-medium rounded-lg border border-text-primary hover:bg-warm transition-colors duration-200"
+                  >
+                    Log in
+                  </button>
+                  <button 
+                    onClick={openSignUp}
+                    className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200"
+                  >
+                    Get Started
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
@@ -109,15 +165,34 @@ function Navbar() {
             </a>
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-3 space-y-3 flex-col">
-                <button className="text-text-primary hover:bg-warm w-full text-center px-4 py-2 text-base font-medium border border-text-primary rounded-lg transition-colors duration-200">
-                  Log in
-                </button>
-                <button 
-                  onClick={openSignUp}
-                  className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-base font-semibold w-full transition-colors duration-200"
-                >
-                  Get Started
-                </button>
+                {user ? (
+                  <>
+                    <span className="text-text-primary text-base text-center">
+                      Welcome, {user.email?.split('@')[0]}!
+                    </span>
+                    <button 
+                      onClick={handleLogout}
+                      className="text-text-primary hover:bg-warm w-full text-center px-4 py-2 text-base font-medium border border-text-primary rounded-lg transition-colors duration-200"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button 
+                      onClick={openLogin}
+                      className="text-text-primary hover:bg-warm w-full text-center px-4 py-2 text-base font-medium border border-text-primary rounded-lg transition-colors duration-200"
+                    >
+                      Log in
+                    </button>
+                    <button 
+                      onClick={openSignUp}
+                      className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-base font-semibold w-full transition-colors duration-200"
+                    >
+                      Get Started
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -126,6 +201,9 @@ function Navbar() {
       
       {/* SignUp Modal */}
       <SignUp isOpen={isSignUpOpen} onClose={closeSignUp} />
+      
+      {/* Login Modal */}
+      <Login isOpen={isLoginOpen} onClose={closeLogin} />
     </nav>
   );
 }
