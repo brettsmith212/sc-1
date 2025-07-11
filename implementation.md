@@ -1,7 +1,7 @@
 # Implementation Plan
 
 ## Routing and Authentication Enhancements
-- [ ] Step 1: Install React Router and Set Up Basic Routing
+- [x] Step 1: Install React Router and Set Up Basic Routing
   - **Task**: Install react-router-dom, configure routing in App.tsx to handle public (Landing) and private routes (Dashboard, etc.), and wrap private routes with an auth check using Supabase session. Define routes for / (Landing), /dashboard, /new-shipment, /history, /templates, /settings. Redirect logged-in users from / to /dashboard.
   - **Description**: This establishes client-side routing to separate logged-in views from the public landing page, ensuring secure access to app features per PRD's auth requirements. It prevents unauthorized access and enables seamless navigation post-login.
   - **Files**:

@@ -15,3 +15,9 @@ export const getSession = async () => {
   const { data: { session } } = await supabase.auth.getSession()
   return session
 }
+
+export const onAuthStateChange = (callback: (session: any) => void) => {
+  return supabase.auth.onAuthStateChange((_event, session) => {
+    callback(session)
+  })
+}
