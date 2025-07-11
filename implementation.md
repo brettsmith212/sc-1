@@ -108,7 +108,7 @@
   - **Agent Instructions**: Test on various screen sizes; confirm no layout breaks.
 
 ## Authentication Integration
-- [ ] Step 11: Implement Sign Up Functionality with Supabase
+- [x] Step 11: Implement Sign Up Functionality with Supabase
   - **Task**: Create a SignUp component (modal or page) using Supabase auth for email/magic link and OAuth (Google). Hook into Navbar’s Sign Up button to show it. Handle errors and success states.
   - **Description**: Adds core auth feature per PRD, integrating with Supabase for minimal friction signup. Focuses on UI matching Buffer’s clean forms.
   - **Files**:

@@ -1,10 +1,20 @@
 import { useState } from 'react';
+import SignUp from './SignUp';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const openSignUp = () => {
+    setIsSignUpOpen(true);
+  };
+
+  const closeSignUp = () => {
+    setIsSignUpOpen(false);
   };
 
   return (
@@ -48,7 +58,10 @@ function Navbar() {
               <button className="text-text-primary px-4 py-2 text-sm font-medium rounded-lg border border-text-primary hover:bg-warm transition-colors duration-200">
                 Log in
               </button>
-              <button className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200">
+              <button 
+                onClick={openSignUp}
+                className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200"
+              >
                 Get Started
               </button>
             </div>
@@ -99,7 +112,10 @@ function Navbar() {
                 <button className="text-text-primary hover:bg-warm w-full text-center px-4 py-2 text-base font-medium border border-text-primary rounded-lg transition-colors duration-200">
                   Log in
                 </button>
-                <button className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-base font-semibold w-full transition-colors duration-200">
+                <button 
+                  onClick={openSignUp}
+                  className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-base font-semibold w-full transition-colors duration-200"
+                >
                   Get Started
                 </button>
               </div>
@@ -107,6 +123,9 @@ function Navbar() {
           </div>
         </div>
       )}
+      
+      {/* SignUp Modal */}
+      <SignUp isOpen={isSignUpOpen} onClose={closeSignUp} />
     </nav>
   );
 }
