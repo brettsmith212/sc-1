@@ -56,7 +56,7 @@
   - **Agent Instructions**: Check hero on mobile; ensure text reflows and CTAs are prominent.
 
 ## Features Sections
-- [ ] Step 6: Implement Features Sections Mimicking Buffer’s Format
+- [x] Step 6: Implement Features Sections Mimicking Buffer’s Format
   - **Task**: Create reusable FeatureSection component and instantiate multiple (e.g., for Instant Discounts, AR Camera, QR Drop-off, Lean UX from PRD). Each with headline, bullet points, and screenshot placeholders (use divs with backgrounds like #D4C2FF, #FFB2A8, #FFD88A, #B0EC9C, or #ADDAFF). Style like Buffer: left/right alignment, rounded images, bullet icons.
   - **Description**: Clones Buffer’s feature breakdowns for showcasing ShipComplete’s differentiators, using alternating layouts for visual interest. This keeps sections self-contained and easy to expand.
   - **Files**:
