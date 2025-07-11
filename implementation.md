@@ -12,7 +12,7 @@
   - **Step Dependencies**: None (builds on existing Supabase setup from landing page plan).
   - **Agent Instructions**: After changes, run `npm install` and `npm run dev`; test by logging in/out to verify redirects (e.g., logged-in user sees /dashboard instead of landing).
 
-- [ ] Step 2: Create Private Route Wrapper Component
+- [x] Step 2: Create Private Route Wrapper Component
   - **Task**: Build a PrivateRoute component that checks Supabase session; if not authenticated, redirect to / (Landing) with a toast notification; otherwise, render the child component. Apply this to all logged-in routes in App.tsx.
   - **Description**: Enhances security by protecting logged-in pages, aligning with PRD's JWT auth and non-functional security requirements. This ensures only authenticated users access the dashboard and shipment flows.
   - **Files**:

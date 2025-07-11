@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import { onAuthStateChange } from './utils/supabaseClient'
+import PrivateRoute from './components/PrivateRoute'
 import Landing from './pages/Landing'
 import Dashboard from './pages/Dashboard'
 import NewShipment from './pages/NewShipment'
@@ -38,25 +40,55 @@ function App() {
         />
         <Route 
           path="/dashboard" 
-          element={session ? <Dashboard /> : <Navigate to="/" replace />} 
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          } 
         />
         <Route 
           path="/new-shipment" 
-          element={session ? <NewShipment /> : <Navigate to="/" replace />} 
+          element={
+            <PrivateRoute>
+              <NewShipment />
+            </PrivateRoute>
+          } 
         />
         <Route 
           path="/history" 
-          element={session ? <History /> : <Navigate to="/" replace />} 
+          element={
+            <PrivateRoute>
+              <History />
+            </PrivateRoute>
+          } 
         />
         <Route 
           path="/templates" 
-          element={session ? <Templates /> : <Navigate to="/" replace />} 
+          element={
+            <PrivateRoute>
+              <Templates />
+            </PrivateRoute>
+          } 
         />
         <Route 
           path="/settings" 
-          element={session ? <Settings /> : <Navigate to="/" replace />} 
+          element={
+            <PrivateRoute>
+              <Settings />
+            </PrivateRoute>
+          } 
         />
       </Routes>
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+        }}
+      />
     </Router>
   )
 }
