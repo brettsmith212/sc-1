@@ -234,8 +234,8 @@ function Navbar() {
                 to="/new-shipment"
                 className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
                   location.pathname === '/new-shipment' 
-                    ? 'bg-primary text-text-primary' 
-                    : 'text-text-primary hover:bg-primary hover:text-text-primary'
+                    ? 'text-text-primary bg-warm' 
+                    : 'text-text-primary hover:bg-warm'
                 }`}
               >
                 New Shipment
@@ -317,8 +317,8 @@ function Navbar() {
               to="/new-shipment"
               className={`block px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200 ${
                 location.pathname === '/new-shipment' 
-                  ? 'bg-primary text-text-primary' 
-                  : 'text-text-primary hover:bg-primary hover:text-text-primary'
+                  ? 'text-text-primary bg-warm' 
+                  : 'text-text-primary hover:bg-warm'
               }`}
             >
               New Shipment
