@@ -58,7 +58,7 @@ function Navbar() {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-buffer-text hover:text-buffer-button focus:outline-none focus:text-buffer-button"
+              className="text-buffer-text hover:text-buffer-text focus:outline-none focus:text-buffer-text"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isMenuOpen ? (
@@ -96,7 +96,7 @@ function Navbar() {
             </a>
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-3 space-y-3 flex-col">
-                <button className="text-buffer-text hover:bg-buffer-hero w-full text-left px-3 py-2 text-base font-medium transition-colors duration-200">
+                <button className="text-buffer-text hover:bg-buffer-hero w-full text-center px-4 py-2 text-base font-medium border border-buffer-text rounded-lg transition-colors duration-200">
                   Log in
                 </button>
                 <button className="bg-buffer-button hover:bg-buffer-button-hover text-buffer-text px-4 py-2 rounded-lg text-base font-semibold w-full transition-colors duration-200">

@@ -26,7 +26,7 @@
   - **Agent Instructions**: Replace placeholders in .env with actual Supabase project credentials; test by logging the client in console to ensure no errors.
 
 ## Navigation and Basic Layout
-- [ ] Step 3: Implement Navigation Bar Cloning Buffer’s Style
+- [x] Step 3: Implement Navigation Bar Cloning Buffer’s Style
   - **Task**: Create a Navbar component mimicking Buffer.com’s top navigation: fixed or sticky positioning, logo on left (use "ShipComplete" text for now), menu items (e.g., Features, Pricing, About – placeholders), and right-side CTAs (Login, Sign Up buttons). Use Tailwind for layout (flex, items-center), fonts (Inter), colors (off-white background #FFFFFA, green button accents #B0EC9C/#9BE784), and rounded buttons.
   - **Description**: Establishes the top-level navigation to match Buffer’s clean, minimal nav bar, providing a consistent header across the landing page. This step focuses on structure and styling details like hover effects (e.g., underline or color change) and responsiveness (mobile menu collapse).
   - **Files**:
@@ -36,7 +36,7 @@
   - **Step Dependencies**: Step 1 (Project setup)
   - **Agent Instructions**: View the page on desktop and mobile; ensure nav items align properly and buttons have hover states (e.g., bg-buffer-button-hover).
 
-- [ ] Step 4: Set Up Basic Section Layout for Landing Page
+- [x] Step 4: Set Up Basic Section Layout for Landing Page
   - **Task**: Structure the Landing page with empty section divs mimicking Buffer’s vertical flow: Hero, Trusted Stats, Features (multiple), Community/Personas, About, Footer. Use Tailwind for full-width sections with padding (e.g., py-16, max-w-7xl mx-auto).
   - **Description**: Creates the skeleton to clone Buffer’s sectional layout, ensuring responsiveness and spacing details (e.g., generous vertical padding, centered content) for a professional feel. This prepares for content population without adding details yet.
   - **Files**:
