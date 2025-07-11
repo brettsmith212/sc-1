@@ -32,7 +32,7 @@
   - **Step Dependencies**: Step 2 (PrivateRoute ready).
   - **Agent Instructions**: Login; verify Navbar shows user elements and dropdown; click Logout to test sign-out and redirect to Landing.
 
-- [ ] Step 4: Implement Sidebar Component
+- [x] Step 4: Implement Sidebar Component
   - **Task**: Create a Sidebar component with links to Dashboard, New Shipment (highlighted CTA), History, Templates, Settings, Support, and Logout at bottom. Make it collapsible on desktop (toggle button) and full-screen overlay on mobile (triggered by Navbar hamburger). Use Tailwind for vertical layout, responsiveness (e.g., hidden by default on mobile), and styling matching Buffer (e.g., #213130 background).
   - **Description**: Provides structured navigation for deeper app sections without cluttering the top bar, improving UX for frequent tasks per PRD's lean design. It's complementary to Navbar, avoiding redundancy by focusing on full menu.
   - **Files**:

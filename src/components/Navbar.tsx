@@ -5,7 +5,11 @@ import Login from './Login';
 import { supabase, signOut } from '../utils/supabaseClient';
 import type { User } from '@supabase/supabase-js';
 
-function Navbar() {
+interface NavbarProps {
+  onToggleSidebar?: () => void;
+}
+
+function Navbar({ onToggleSidebar }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -281,68 +285,21 @@ function Navbar() {
             </div>
           </div>
 
-          {/* Mobile menu button (hamburger) */}
+          {/* Mobile menu button (hamburger) - for sidebar */}
           <div className="md:hidden">
             <button
-              onClick={toggleMenu}
+              onClick={onToggleSidebar}
               className="text-text-primary hover:text-text-primary focus:outline-none focus:text-text-primary"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-light border-t border-gray-200">
-            <Link
-              to="/dashboard"
-              className={`block px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200 ${
-                location.pathname === '/dashboard' 
-                  ? 'text-text-primary bg-warm' 
-                  : 'text-text-primary hover:bg-warm'
-              }`}
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/new-shipment"
-              className={`block px-3 py-2 text-base font-medium rounded-lg transition-colors duration-200 ${
-                location.pathname === '/new-shipment' 
-                  ? 'text-text-primary bg-warm' 
-                  : 'text-text-primary hover:bg-warm'
-              }`}
-            >
-              New Shipment
-            </Link>
-            <div className="pt-4 pb-3 border-t border-gray-200">
-              <div className="flex items-center px-3 mb-3">
-                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-text-primary font-medium mr-3">
-                  {user?.email?.charAt(0).toUpperCase()}
-                </div>
-                <div>
-                  <div className="text-sm text-text-primary opacity-75">Lifetime Savings</div>
-                  <div className="text-lg font-semibold text-primary">$0</div>
-                </div>
-              </div>
-              <button 
-                onClick={handleLogout}
-                className="w-full text-left px-3 py-2 text-base font-medium text-text-primary hover:bg-warm rounded-lg transition-colors duration-200"
-              >
-                Sign Out
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Mobile Menu is now handled by Sidebar component */}
     </nav>
   );
 }
