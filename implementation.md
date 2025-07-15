@@ -43,7 +43,7 @@
   - **Agent Instructions**: On desktop, toggle collapse; on mobile, open/close overlay; click links to ensure routing works (even to placeholders).
 
 ## Dashboard Page Implementation
-- [ ] Step 5: Create Dashboard Page Skeleton
+- [x] Step 5: Create Dashboard Page Skeleton
   - **Task**: Build Dashboard.tsx with main content area: grid of metric cards for savings (e.g., "Lifetime Savings: $X", "This Month: $Y on Z shipments" – use placeholders or mock data), recent shipments list (top 3-5 as cards with mock details like date, recipient, savings), and prominent "Create New Shipment" button linking to /new-shipment. Include Sidebar integration.
   - **Description**: Establishes the home screen for logged-in users, showcasing savings and quick actions per PRD's F8 (savings dashboard) and success metrics. This builds trust and encourages retention.
   - **Files**:
