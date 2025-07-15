@@ -221,31 +221,8 @@ function Navbar({ onToggleSidebar }: NavbarProps) {
             </Link>
           </div>
 
-          {/* Desktop Quick Links */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
-              <Link
-                to="/dashboard"
-                className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
-                  location.pathname === '/dashboard' 
-                    ? 'text-text-primary bg-warm' 
-                    : 'text-text-primary hover:bg-warm'
-                }`}
-              >
-                Dashboard
-              </Link>
-              <Link
-                to="/new-shipment"
-                className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
-                  location.pathname === '/new-shipment' 
-                    ? 'text-text-primary bg-warm' 
-                    : 'text-text-primary hover:bg-warm'
-                }`}
-              >
-                New Shipment
-              </Link>
-            </div>
-          </div>
+          {/* Spacer for center alignment */}
+          <div className="flex-1"></div>
 
           {/* Desktop User Dropdown */}
           <div className="hidden md:block">
