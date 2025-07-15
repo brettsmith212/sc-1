@@ -1,5 +1,7 @@
+import { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import { signOut } from '../utils/supabaseClient';
+import { supabase, signOut } from '../utils/supabaseClient';
+import type { User } from '@supabase/supabase-js';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -9,17 +11,67 @@ interface SidebarProps {
 }
 
 function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: SidebarProps) {
+  const [user, setUser] = useState<User | null>(null);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = async () => {
     try {
       await signOut();
+      setUser(null);
+      setIsUserDropdownOpen(false);
       window.location.href = '/';
     } catch (error) {
       console.error('Error signing out:', error);
     }
   };
 
+  const toggleUserDropdown = () => {
+    setIsUserDropdownOpen(!isUserDropdownOpen);
+  };
+
+  // Check for existing session and listen for auth changes
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Handle clicking outside dropdown to close it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsUserDropdownOpen(false);
+      }
+    };
+
+    if (isUserDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isUserDropdownOpen]);
+
   const navigationItems = [
+    {
+      name: 'New Shipment',
+      href: '/new-shipment',
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+      ),
+    },
     {
       name: 'Dashboard',
       href: '/dashboard',
@@ -29,16 +81,6 @@ function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: SidebarProp
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z" />
         </svg>
       ),
-    },
-    {
-      name: 'New Shipment',
-      href: '/new-shipment',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-      ),
-      isHighlighted: true,
     },
     {
       name: 'History',
@@ -133,9 +175,7 @@ function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: SidebarProp
                 flex items-center px-2 py-2 text-sm font-medium rounded-lg transition-colors duration-200
                 ${isActive 
                   ? 'bg-primary text-gray-900' 
-                  : item.isHighlighted 
-                    ? 'bg-primary hover:bg-primary-hover text-gray-900' 
-                    : 'text-gray-300 hover:bg-gray-600 hover:text-white'
+                  : 'text-gray-300 hover:bg-gray-600 hover:text-white'
                 }
                 ${isCollapsed ? 'justify-center' : ''}
               `}
@@ -144,7 +184,7 @@ function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: SidebarProp
                 {item.icon}
               </span>
               {!isCollapsed && (
-                <span className={item.isHighlighted ? 'font-semibold' : ''}>
+                <span>
                   {item.name}
                 </span>
               )}
@@ -152,24 +192,56 @@ function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: SidebarProp
           ))}
         </nav>
 
-        {/* Bottom Section - Logout */}
-        <div className="p-2 border-t border-gray-600">
-          <button
-            onClick={handleLogout}
-            className={`
-              w-full flex items-center px-2 py-2 text-sm font-medium text-gray-300 rounded-lg 
-              hover:bg-gray-600 hover:text-white transition-colors duration-200
-              ${isCollapsed ? 'justify-center' : ''}
-            `}
-          >
-            <span className={`${isCollapsed ? '' : 'mr-3'}`}>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-            </span>
-            {!isCollapsed && 'Logout'}
-          </button>
+        {/* User Information Section - Bottom */}
+        <div className="p-4 border-t border-gray-600">
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={toggleUserDropdown}
+              className={`
+                w-full flex items-center p-2 rounded-lg transition-all duration-200
+                ${isCollapsed ? 'justify-center hover:bg-transparent' : 'hover:bg-gray-600'}
+              `}
+            >
+              <div className={`
+                w-8 h-8 bg-primary rounded-full flex items-center justify-center text-gray-900 font-medium flex-shrink-0 transition-transform duration-200
+                ${isCollapsed ? 'hover:-translate-y-1' : ''}
+              `}>
+                {user?.email?.charAt(0).toUpperCase() || 'U'}
+              </div>
+              {!isCollapsed && (
+                <>
+                  <span className="ml-3 text-white text-sm font-medium">
+                    {user?.email?.split('@')[0] || 'User'}
+                  </span>
+                  <svg className="ml-auto h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </>
+              )}
+            </button>
+
+            {/* User Dropdown Menu */}
+            {isUserDropdownOpen && (
+              <div className={`
+                absolute ${isCollapsed ? 'left-12' : 'left-0'} bottom-full mb-2 w-64 bg-light rounded-lg shadow-lg border border-gray-200 z-50
+              `}>
+                <div className="p-4 border-b border-gray-200">
+                  <div className="text-sm text-gray-600">Lifetime Savings</div>
+                  <div className="text-lg font-semibold text-primary">$0</div>
+                </div>
+                <div className="py-2">
+                  <button 
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
+
       </div>
 
       {/* Main content spacer for desktop */}

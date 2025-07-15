@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import SignUp from './SignUp';
 import Login from './Login';
@@ -14,9 +14,7 @@ function Navbar({ onToggleSidebar }: NavbarProps) {
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const location = useLocation();
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -42,15 +40,10 @@ function Navbar({ onToggleSidebar }: NavbarProps) {
     try {
       await signOut();
       setUser(null);
-      setIsUserDropdownOpen(false);
       window.location.href = '/';
     } catch (error) {
       console.error('Error signing out:', error);
     }
-  };
-
-  const toggleUserDropdown = () => {
-    setIsUserDropdownOpen(!isUserDropdownOpen);
   };
 
   // Check for existing session and listen for auth changes
@@ -68,22 +61,7 @@ function Navbar({ onToggleSidebar }: NavbarProps) {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Handle clicking outside dropdown to close it
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsUserDropdownOpen(false);
-      }
-    };
 
-    if (isUserDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isUserDropdownOpen]);
 
   // Don't show navbar on landing page for logged-out users
   if (!user && location.pathname === '/') {
@@ -93,7 +71,7 @@ function Navbar({ onToggleSidebar }: NavbarProps) {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Link to="/" className="text-text-primary text-xl font-bold">
+              <Link to="/" className="text-text-primary text-xl font-bold transition-transform duration-200 hover:-translate-y-1 inline-block">
                 ShipComplete
               </Link>
             </div>
@@ -103,19 +81,19 @@ function Navbar({ onToggleSidebar }: NavbarProps) {
               <div className="ml-10 flex items-baseline space-x-8">
                 <a
                   href="#features"
-                  className="text-text-primary px-3 py-2 text-sm font-medium rounded-lg hover:bg-warm transition-colors duration-200"
+                  className="text-text-primary px-3 py-2 text-sm font-medium rounded-lg transition-transform duration-200 hover:-translate-y-1 inline-block"
                 >
                   Features
                 </a>
                 <a
                   href="#pricing"
-                  className="text-text-primary px-3 py-2 text-sm font-medium rounded-lg hover:bg-warm transition-colors duration-200"
+                  className="text-text-primary px-3 py-2 text-sm font-medium rounded-lg transition-transform duration-200 hover:-translate-y-1 inline-block"
                 >
                   Pricing
                 </a>
                 <a
                   href="#about"
-                  className="text-text-primary px-3 py-2 text-sm font-medium rounded-lg hover:bg-warm transition-colors duration-200"
+                  className="text-text-primary px-3 py-2 text-sm font-medium rounded-lg transition-transform duration-200 hover:-translate-y-1 inline-block"
                 >
                   About
                 </a>
@@ -125,15 +103,15 @@ function Navbar({ onToggleSidebar }: NavbarProps) {
             {/* Desktop CTA Buttons */}
             <div className="hidden md:block">
               <div className="ml-4 flex items-center space-x-4">
-                <button 
+                <button
                   onClick={openLogin}
-                  className="text-text-primary px-4 py-2 text-sm font-medium rounded-lg border border-text-primary hover:bg-warm transition-colors duration-200"
+                  className="text-text-primary px-4 py-2 text-sm font-medium rounded-lg border border-text-primary transition-transform duration-200 hover:-translate-y-1"
                 >
                   Log in
                 </button>
-                <button 
+                <button
                   onClick={openSignUp}
-                  className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200"
+                  className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:-translate-y-1"
                 >
                   Get Started
                 </button>
@@ -164,33 +142,33 @@ function Navbar({ onToggleSidebar }: NavbarProps) {
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-light border-t border-gray-200">
               <a
                 href="#features"
-                className="text-text-primary hover:bg-warm block px-3 py-2 text-base font-medium transition-colors duration-200"
+                className="text-text-primary block px-3 py-2 text-base font-medium transition-transform duration-200 hover:-translate-y-1"
               >
                 Features
               </a>
               <a
                 href="#pricing"
-                className="text-text-primary hover:bg-warm block px-3 py-2 text-base font-medium transition-colors duration-200"
+                className="text-text-primary block px-3 py-2 text-base font-medium transition-transform duration-200 hover:-translate-y-1"
               >
                 Pricing
               </a>
               <a
                 href="#about"
-                className="text-text-primary hover:bg-warm block px-3 py-2 text-base font-medium transition-colors duration-200"
+                className="text-text-primary block px-3 py-2 text-base font-medium transition-transform duration-200 hover:-translate-y-1"
               >
                 About
               </a>
               <div className="pt-4 pb-3 border-t border-gray-200">
                 <div className="flex items-center px-3 space-y-3 flex-col">
-                  <button 
+                  <button
                     onClick={openLogin}
-                    className="text-text-primary hover:bg-warm w-full text-center px-4 py-2 text-base font-medium border border-text-primary rounded-lg transition-colors duration-200"
+                    className="text-text-primary w-full text-center px-4 py-2 text-base font-medium border border-text-primary rounded-lg transition-transform duration-200 hover:-translate-y-1"
                   >
                     Log in
                   </button>
-                  <button 
+                  <button
                     onClick={openSignUp}
-                    className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-base font-semibold w-full transition-colors duration-200"
+                    className="bg-primary hover:bg-primary-hover text-text-primary px-4 py-2 rounded-lg text-base font-semibold w-full transition-all duration-200 hover:-translate-y-1"
                   >
                     Get Started
                   </button>
@@ -199,10 +177,10 @@ function Navbar({ onToggleSidebar }: NavbarProps) {
             </div>
           </div>
         )}
-        
+
         {/* SignUp Modal */}
         <SignUp isOpen={isSignUpOpen} onClose={closeSignUp} />
-        
+
         {/* Login Modal */}
         <Login isOpen={isLoginOpen} onClose={closeLogin} />
       </nav>
@@ -216,7 +194,7 @@ function Navbar({ onToggleSidebar }: NavbarProps) {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/dashboard" className="text-text-primary text-xl font-bold">
+            <Link to="/dashboard" className="text-text-primary text-xl font-bold transition-transform duration-200 hover:-translate-y-1 inline-block">
               ShipComplete
             </Link>
           </div>
@@ -224,41 +202,15 @@ function Navbar({ onToggleSidebar }: NavbarProps) {
           {/* Spacer for center alignment */}
           <div className="flex-1"></div>
 
-          {/* Desktop User Dropdown */}
+          {/* Desktop Logout Button */}
           <div className="hidden md:block">
             <div className="ml-4 flex items-center space-x-4">
-              <div className="relative" ref={dropdownRef}>
-                <button 
-                  onClick={toggleUserDropdown}
-                  className="flex items-center text-sm text-text-primary hover:bg-warm focus:outline-none rounded-lg px-3 py-2 transition-colors duration-200"
-                >
-                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-text-primary font-medium mr-2">
-                    {user?.email?.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="hidden lg:block">{user?.email?.split('@')[0]}</span>
-                  <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                
-                {/* Dropdown Menu */}
-                {isUserDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-64 bg-light rounded-lg shadow-lg border border-gray-200 z-10">
-                    <div className="p-4 border-b border-gray-200">
-                      <div className="text-sm text-text-primary opacity-75">Lifetime Savings</div>
-                      <div className="text-lg font-semibold text-primary">$0</div>
-                    </div>
-                    <div className="py-2">
-                      <button 
-                        onClick={handleLogout}
-                        className="w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-warm transition-colors duration-200"
-                      >
-                        Sign Out
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <button
+                onClick={handleLogout}
+                className="text-text-primary px-3 py-2 rounded-lg text-sm font-medium transition-transform duration-200 hover:-translate-y-1"
+              >
+                Sign Out
+              </button>
             </div>
           </div>
 
